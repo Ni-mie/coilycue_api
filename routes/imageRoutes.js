@@ -10,7 +10,7 @@ router.get('/:category/:hairstyle/:color', async (req, res) => {
     try {
         // Construct the file path to the requested image
         const imagePath = path.join(__dirname, '..', 'uploads', category, hairstyle, color);
-
+        const imageUrl = `https://coilycue-api.onrender.com/images/${category}/${hairstyle}/${color}`;
         // Check if the image file exists
         await fs.access(imagePath);
 
@@ -19,7 +19,7 @@ router.get('/:category/:hairstyle/:color', async (req, res) => {
             category,
             hairstyle,
             color,
-            imageUrl: `/images/${category}/${hairstyle}/${color}` // URL to access the image
+            imageUrl // URL to access the image
         });
         
         // Save the image document to MongoDB
@@ -27,7 +27,7 @@ router.get('/:category/:hairstyle/:color', async (req, res) => {
         console.log('Image document saved to MongoDB:', image);
 
         // Serve the image file
-        res.sendFile(imagePath);
+        res.json({ imageUrl });
     } catch (error) {
         console.error('Error retrieving image:', error);
         res.status(404).send('Image not found');
