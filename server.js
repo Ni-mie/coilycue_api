@@ -4,7 +4,7 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 2000;
+const PORT = process.env.PORT || 10000;
 
 mongoose.connect(process.env.MONGODB_URI, {
 }).then(() => {
