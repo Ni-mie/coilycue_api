@@ -14,6 +14,8 @@ mongoose.connect(process.env.MONGODB_URI, {
     process.exit(1);
 });
 
+const apiKey = process.env.API_KEY;
+
 app.use(express.json());
 
 const imageRoutes = require('./routes/imageRoutes');
