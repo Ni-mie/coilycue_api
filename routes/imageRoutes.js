@@ -121,7 +121,6 @@ router.get('/category/:category', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         // Specify the directory where uploaded images will be stored
@@ -134,11 +133,14 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// POST route to upload an image and save its information to MongoDB
-router.post('/upload', async (req, res) => {
+// POST route to handle image uploads
+router.post('/upload', upload.single('image'), async (req, res) => {
     try {
         // Extract image details from the request body
-        const { category, hairstyle, color, imageUrl } = req.body;
+        const { category, hairstyle, color } = req.body;
+
+        // Construct the image URL based on the uploaded file path
+        const imageUrl = `https://example.com/uploads/${req.file.filename}`;
 
         // Create a new image document in MongoDB
         const image = new Image({
