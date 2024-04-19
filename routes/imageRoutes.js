@@ -39,13 +39,34 @@ router.get('/all', async (req, res) => {
         // Query the MongoDB images collection to retrieve all image documents
         const images = await Image.find();
 
-        // Send the retrieved image documents as a JSON response
-        res.json(images);
+        const hairstyleLists = {};
+
+        images.forEach(image => {
+            const { hairstyle, color } = image;
+
+            // Initialize an empty array for the hairstyle if not exists
+            if (!hairstyleLists[hairstyle]) {
+                hairstyleLists[hairstyle] = [];
+            }
+
+            // Add the image to the appropriate list
+            if (color === 'black') {
+                // Add black images to the beginning of the list
+                hairstyleLists[hairstyle].unshift(image);
+            } else {
+                // Add non-black images to the end of the list
+                hairstyleLists[hairstyle].push(image);
+            }
+        });
+
+        // Send the organized lists as a JSON response
+        res.json(hairstyleLists);
     } catch (error) {
         console.error('Error fetching images:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 router.get('/hairstyle/:hairstyle', async (req, res) => {
     const { hairstyle } = req.params;
     try {
