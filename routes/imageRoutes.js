@@ -13,9 +13,11 @@ router.get('/:category/:hairstyle/:color', async (req, res) => {
         const imageUrl = `https://coilycue-api.onrender.com/images/${category}/${hairstyle}/${color}`;
         // Check if the image file exists
         await fs.access(imagePath);
+        res.sendFile(imagePath);
+
 
         // If the image file exists, create a new document in MongoDB
-        const image = new Image({
+       /* const image = new Image({
             category,
             hairstyle,
             color,
@@ -28,6 +30,7 @@ router.get('/:category/:hairstyle/:color', async (req, res) => {
 
         // Serve the image file
         res.json({ imageUrl });
+        */
     } catch (error) {
         console.error('Error retrieving image:', error);
         res.status(404).send('Image not found');
