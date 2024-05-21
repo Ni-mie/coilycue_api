@@ -1,10 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 10000;
+
+app.use(cors({
+    origin: '*', 
+    optionsSuccessStatus: 200
+}));
 
 mongoose.connect(process.env.MONGODB_URI, {
 }).then(() => {

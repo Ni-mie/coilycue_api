@@ -136,28 +136,13 @@ const upload = multer({ storage });
 // POST route to handle image uploads
 router.post('/upload', upload.single('image'), async (req, res) => {
     try {
-        // Extract image details from the request body
         const { category, hairstyle, color } = req.body;
-
-        // Construct the image URL based on the uploaded file path
-        const imageUrl = `https://example.com/uploads/${req.file.filename}`;
-
-        // Create a new image document in MongoDB
-        const image = new Image({
-            category,
-            hairstyle,
-            color,
-            imageUrl
-        });
-
-        // Save the image document to MongoDB
+        const imageUrl = `https://coilycue-api.onrender.com/images/${category}/${hairstyle}/${color}/${req.file.filename}`;
+        const image = new Image({ category, hairstyle, color, imageUrl });
         await image.save();
-
-        // Send a success response
         res.status(201).json({ message: 'Image uploaded successfully', image });
     } catch (error) {
         console.error('Error uploading image:', error);
-        // Send an error response
         res.status(500).json({ error: 'Internal server error' });
     }
 });
